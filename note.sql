@@ -30,38 +30,149 @@ create table avaliacao (
 	references usuarios(codigo)
 )
 
-select 
-nome, 
-IIF(sexo =  'M', 'MASCULINO', 'FEMININO') [sexo],
-convert(char(10), a.dt_nasc, 103) [dt_nasc], 
-convert(char(10), a.dt_registro, 103) [dt_registro], 
-b.email, 
-b.senha,
-proc_odonto,
-hist_clinico,
-alergia ,
-cond_medica,
-trat_andamento
-from TREATDENTAL.dbo.usuarios a
-inner join login as b on b.codigo_usuario = a.codigo
-left join avaliacao as c on c.codigo_usuario = a.codigo
---where ?`
+create table anamnese (
+	codigo int primary key not null identity,
+	codigo_usuario int not null,
+	data date not null,
+	hn_onicofagia  bit not null,
+	hn_mt  bit not null,
+	hn_mo  bit not null,
+	hn_ml  bit not null,
+	hn_rpb bit not null,
+	hn_sc bit not null,
+	hn_briquismo bit not null,
+	hn_tgb bit not null,
+	hn_tabagista bit not null,
+	hn_tabagista_obs varchar(255) null,
+	hn_etilista bit not null,
+	hn_etilista_obs varchar(255) null,
+	hn_ad bit not null,
+	hn_chupeta bit not null,
+	hn_detalhes text null,
 
-select 
-b.email, 
-b.senha_hash
-from TREATDENTAL.dbo.login b
-where b.email = ${data.email}
+	hg_ff_dental bit not null,
+	hg_unitufo_bitufo bit not null,
+	hg_bochecho bit not null,
+	hg_escova_inter bit not null,
+	hg_creme_dental bit not null,
+	hg_outros bit not null,
+	hg_palito bit not null,
+	hg_escova_normal bit not null,
+	hg_escova_eletrica bit not null,
+	hg_num_vezes int not null,
+	hg_op_acordar bit not null,
+	hg_op_cafe bit not null,
+	hg_op_almoco bit not null,
+	hg_op_jantar bit not null,
+	hg_op_dormir bit not null,
+	hg_detalhes text null,
 
-DECLARE @codigoGerado TABLE (codigo INT);
-INSERT INTO usuarios (nome, sexo, dt_nasc, telefone, dt_registro)
-OUTPUT INSERTED.codigo INTO @codigoGerado
-VALUES (${data.nome}, ${data.sexo}, ${data.dt_nasc}, ${data.telefone}, getdate());
-SELECT codigo AS NovoCodigo FROM @codigoGerado;
+	ef_domic_abast bit not null,
+	ef_domic_abast_tempo varchar(50) null,
+	ef_creme_dental bit not null,
+	ef_bochecho bit not null,
+	ef_dentista bit not null,
+	ef_dentista_freq varchar(50) null,
+	ef_detalhes text null,
 
-insert into TREATDENTAL.dbo.login
-(codigo_usuario, email, senha_hash) 
-values 
-(${newUser}, ${data.email}, ${data.password})
+	motivo_trat text null,
+	hist_doenca_atual text null,
+	antecedentes text null,
+	constraint fk_anamnese_usuario foreign key (codigo_usuario)
+	references usuarios(codigo)
+)
 
-update login set senha = ${data.password} where email = ${email}
+USE [TREATDENTAL]
+GO
+
+INSERT INTO [dbo].[anamnese]
+           /*([codigo_usuario]
+           ,[data]
+           ,[hn_onicofagia]
+           ,[hn_mt]
+           ,[hn_mo]
+           ,[hn_ml]
+           ,[hn_rpb]
+           ,[hn_sc]
+           ,[hn_briquismo]
+           ,[hn_tgb]
+           ,[hn_tabagista]
+           ,[hn_tabagista_obs]
+           ,[hn_etilista]
+           ,[hn_etilista_obs]
+           ,[hn_ad]
+           ,[hn_chupeta]
+           ,[hn_detalhes]
+           ,[hg_ff_dental]
+           ,[hg_unitufo_bitufo]
+           ,[hg_bochecho]
+           ,[hg_escova_inter]
+           ,[hg_creme_dental]
+           ,[hg_outros]
+           ,[hg_palito]
+           ,[hg_escova_normal]
+           ,[hg_escova_eletrica]
+           ,[hg_num_vezes]
+           ,[hg_op_acordar]
+           ,[hg_op_cafe]
+           ,[hg_op_almoco]
+           ,[hg_op_jantar]
+           ,[hg_op_dormir]
+           ,[hg_detalhes]
+           ,[ef_domic_abast]
+           ,[ef_domic_abast_tempo]
+           ,[ef_creme_dental]
+           ,[ef_bochecho]
+           ,[ef_dentista]
+           ,[ef_dentista_freq]
+           ,[ef_detalhes]
+           ,[motivo_trat]
+           ,[hist_doenca_atual]
+           ,[antecedentes])*/
+     VALUES
+           (1
+           ,'20/09/2024'
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,'teste'
+           ,1
+           ,'teste'
+           ,1
+           ,1
+           ,'teste teste'
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,2
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1
+           ,'teste'
+           ,1
+           ,'teste'
+           ,1
+           ,1
+           ,1
+           ,'teste'
+           ,'teste'
+           ,'teste teste teste'
+           ,'teste teste teste'
+           ,'teste teste teste'
+		   )
+
+
